@@ -1,0 +1,146 @@
+[
+  {
+    "source_id": "src_clinical_north",
+    "name": "North Clinical Registry",
+    "category": "clinical",
+    "description": "Synthetic clinical dataset (seeded, non-personal)",
+    "sensitive_columns": [
+      "full_name",
+      "email",
+      "phone",
+      "date_of_birth",
+      "home_address",
+      "diagnosis_code",
+      "condition_note"
+    ],
+    "record_count": 60,
+    "grants": [
+      {
+        "grant_id": "grant_src_clinical_north_clinical_north",
+        "purpose": "clinical",
+        "org_scope": "north"
+      },
+      {
+        "grant_id": "grant_src_clinical_north_clinical_shared",
+        "purpose": "clinical",
+        "org_scope": "shared"
+      }
+    ]
+  },
+  {
+    "source_id": "src_clinical_central",
+    "name": "Central Clinical Registry",
+    "category": "clinical",
+    "description": "Synthetic clinical dataset (seeded, non-personal)",
+    "sensitive_columns": [
+      "full_name",
+      "email",
+      "phone",
+      "date_of_birth",
+      "home_address",
+      "diagnosis_code",
+      "condition_note"
+    ],
+    "record_count": 45,
+    "grants": [
+      {
+        "grant_id": "grant_src_clinical_central_clinical_central",
+        "purpose": "clinical",
+        "org_scope": "central"
+      },
+      {
+        "grant_id": "grant_src_clinical_central_clinical_shared",
+        "purpose": "clinical",
+        "org_scope": "shared"
+      }
+    ]
+  },
+  {
+    "source_id": "src_tx_fraud",
+    "name": "Transaction Fraud Feed",
+    "category": "fraud_detection",
+    "description": "Synthetic fraud_detection dataset (seeded, non-personal)",
+    "sensitive_columns": [
+      "full_name",
+      "email",
+      "phone",
+      "home_address",
+      "account_number"
+    ],
+    "record_count": 75,
+    "grants": [
+      {
+        "grant_id": "grant_src_tx_fraud_fraud_detection_north",
+        "purpose": "fraud_detection",
+        "org_scope": "north"
+      },
+      {
+        "grant_id": "grant_src_tx_fraud_fraud_detection_central",
+        "purpose": "fraud_detection",
+        "org_scope": "central"
+      },
+      {
+        "grant_id": "grant_src_tx_fraud_fraud_detection_shared",
+        "purpose": "fraud_detection",
+        "org_scope": "shared"
+      }
+    ]
+  },
+  {
+    "source_id": "src_hr_workforce",
+    "name": "Workforce HR Extract",
+    "category": "workforce",
+    "description": "Synthetic workforce dataset (seeded, non-personal)",
+    "sensitive_columns": [
+      "full_name",
+      "email",
+      "phone",
+      "date_of_birth",
+      "home_address",
+      "salary"
+    ],
+    "record_count": 54,
+    "grants": [
+      {
+        "grant_id": "grant_src_hr_workforce_workforce_north",
+        "purpose": "workforce",
+        "org_scope": "north"
+      },
+      {
+        "grant_id": "grant_src_hr_workforce_workforce_central",
+        "purpose": "workforce",
+        "org_scope": "central"
+      }
+    ]
+  },
+  {
+    "source_id": "src_market_panel",
+    "name": "Market Research Panel",
+    "category": "market_research",
+    "description": "Synthetic market_research dataset (seeded, non-personal)",
+    "sensitive_columns": [
+      "full_name",
+      "email",
+      "phone",
+      "home_address"
+    ],
+    "record_count": 48,
+    "grants": [
+      {
+        "grant_id": "grant_src_market_panel_market_research_north",
+        "purpose": "market_research",
+        "org_scope": "north"
+      },
+      {
+        "grant_id": "grant_src_market_panel_market_research_central",
+        "purpose": "market_research",
+        "org_scope": "central"
+      },
+      {
+        "grant_id": "grant_src_market_panel_market_research_shared",
+        "purpose": "market_research",
+        "org_scope": "shared"
+      }
+    ]
+  }
+]

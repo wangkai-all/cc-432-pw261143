@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>许可缩减合规分析控制台</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <h1>许可缩减合规分析控制台</h1>
+  <div class="sub">授权快照 · 样本构建 · 报告服务 — 三服务独立运行，血缘可追到每一行</div>
+  <div id="health" class="health"></div>
+</header>
+
+<nav id="tabs">
+  <button data-tab="catalog" class="active">数据源与授权</button>
+  <button data-tab="builder">样本构建</button>
+  <button data-tab="purpose">用途变更</button>
+  <button data-tab="reports">报告与导出</button>
+  <button data-tab="retraction">许可撤回与影响</button>
+  <button data-tab="sim">故障模拟与对账</button>
+  <button data-tab="lineage">血缘追踪</button>
+</nav>
+
+<main>
+  <!-- Catalog -->
+  <section id="tab-catalog" class="tab active">
+    <div class="row">
+      <button id="btn-load-catalog">刷新数据源</button>
+      <button id="btn-snapshots">查看快照</button>
+      <button id="btn-new-snapshot">手动生成新快照</button>
+    </div>
+    <div id="catalog-out"></div>
+    <h3>授权快照（不可变）</h3>
+    <div id="snapshots-out"></div>
+  </section>
+
+  <!-- Builder -->
+  <section id="tab-builder" class="tab">
+    <h3>发起样本构建（按当前快照授权，服务端校验）</h3>
+    <div class="form">
+      <label>数据源 <select id="build-source"></select></label>
+      <label>用途 <select id="build-purpose">
+        <option>clinical</option><option>fraud_detection</option>
+        <option>workforce</option><option>market_research</option>
+      </select></label>
+      <label>组织范围 <select id="build-org">
+        <option>north</option><option>central</option><option>shared</option>
+      </select></label>
+      <button id="btn-build">构建样本</button>
+    </div>
+    <h3>构建任务（可中断 / 可恢复）</h3>
+    <div class="row">
+      <button id="btn-refresh-jobs">刷新任务</button>
+    </div>
+    <div id="jobs-out"></div>
+    <h3>样本版本（隔离，不含原始值）</h3>
+    <div id="samples-out"></div>
+  </section>
+
+  <!-- Purpose change -->
+  <section id="tab-purpose" class="tab">
+    <h3>变更数据用途（逐行，授权服务重新裁决）</h3>
+    <div class="form">
+      <label>血缘 ID <input id="pchg-lineage" placeholder="LN_src_..."></label>
+      <label>新用途 <select id="pchg-purpose">
+        <option>clinical</option><option>fraud_detection</option>
+        <option>workforce</option><option>market_research</option>
+      </select></label>
+      <button id="btn-pchg">提交用途变更</button>
+    </div>
+    <div class="row"><button id="btn-pchg-list">刷新变更记录</button></div>
+    <div id="pchg-out"></div>
+  </section>
+
+  <!-- Reports -->
+  <section id="tab-reports" class="tab">
+    <h3>生成分析报告（真实指标计算）</h3>
+    <div class="form">
+      <label>标题 <input id="rpt-title" placeholder="2026 合规分析报告"></label>
+      <label>样本 <select id="rpt-sample"></select></label>
+      <button id="btn-rpt-create">生成报告</button>
+    </div>
+    <div class="row"><button id="btn-rpt-refresh">刷新报告</button></div>
+    <div id="reports-out"></div>
+  </section>
+
+  <!-- Retraction -->
+  <section id="tab-retraction" class="tab">
+    <h3>发起许可撤回（生成新快照 + 出站事件）</h3>
+    <div class="form">
+      <label>数据源 <select id="retr-source"></select></label>
+      <label>用途（空=全部）<input id="retr-purposes" placeholder="clinical,fraud_detection"></label>
+      <label>组织（空=全部）<input id="retr-orgs" placeholder="north,central"></label>
+      <label>原因 <input id="retr-reason" value="来源许可缩减"></label>
+      <button id="btn-retr">撤回许可</button>
+    </div>
+    <div class="row">
+      <button id="btn-retr-list">刷新撤回记录</button>
+      <button id="btn-findings">刷新影响明细</button>
+    </div>
+    <div id="retractions-out"></div>
+    <h3>影响明细（贡献度与重建/阻断裁决）</h3>
+    <div id="findings-out"></div>
+  </section>
+
+  <!-- Simulation -->
+  <section id="tab-sim" class="tab">
+    <h3>通知丢失模拟（授权服务出站箱）</h3>
+    <div class="form">
+      <label>消费者 <select id="loss-consumer">
+        <option>builder</option><option>report</option></select></label>
+      <label>丢失次数 <input id="loss-count" type="number" value="1" min="1"></label>
+      <button id="btn-loss">注入丢失规则</button>
+    </div>
+    <h3>构建中断模拟（样本构建器）</h3>
+    <div class="form">
+      <label>中断阶段 <select id="fail-stage">
+        <option>queued</option><option>materialized</option>
+        <option>completed</option></select></label>
+      <label>次数 <input id="fail-count" type="number" value="1" min="1"></label>
+      <button id="btn-fail">注入中断规则</button>
+    </div>
+    <h3>事件对账（拉取补偿 + 收件箱重放）</h3>
+    <div class="row">
+      <button id="btn-reconcile">执行对账（pull + 重放收件箱）</button>
+      <button id="btn-deliveries">刷新投递状态</button>
+      <button id="btn-inbox">刷新收件箱</button>
+    </div>
+    <div id="sim-out"></div>
+  </section>
+
+  <!-- Lineage -->
+  <section id="tab-lineage" class="tab">
+    <h3>端到端血缘追踪（指标 → 报告 → 样本 → 原始行号；不返回敏感值）</h3>
+    <div class="form">
+      <label>血缘 ID <input id="trace-id" placeholder="LN_src_..."></label>
+      <button id="btn-trace">追踪</button>
+    </div>
+    <div id="trace-out"></div>
+  </section>
+</main>
+
+<div id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
